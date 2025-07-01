@@ -8,12 +8,12 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Google Drive folder IDs for 6 segments
 const folderIds = {
-  'ca-registration': '1KSIbsfpRnj1y8yt32vC7sTFWA10arFbb',
-  'mobile-registration': '1x7TaP1VMzTdW7F9HHOWRR8iGUR0ZsybF',
-  'camera-registration': '1aSm3l5JJA8oJfV6Q8Bi3UaWBPRbnIURK',
-  'story-writing': '13vGQywI8uN2rwlRYRbSXHuoWZ5Ntu4WI',
-  'poster-design': '1ZyMJ7z7ybj_5D9L5DAS3fksPOEV3phDy',
-  'video-content': '1MpPiEx6WaYMtPrwRMp8JblNgA2lB4JHd'
+  'ca-registration': '1KSIbsfpRnj1y8yt32vC7sTFWA10arFbb',    // Added for CA
+  'mobile-registration': '1x7TaP1VMzTdW7F9HHOWRR8iGUR0ZsybF',  // Confirmed
+  'camera-registration': '1aSm3l5JJA8oJfV6Q8Bi3UaWBPRbnIURK', // Confirmed
+  'story-writing': '13vGQywI8uN2rwlRYRbSXHuoWZ5Ntu4WI',      // Confirmed
+  'poster-design': '1ZyMJ7z7ybj_5D9L5DAS3fksPOEV3phDy',        // Confirmed
+  'video-content': '1MpPiEx6WaYMtPrwRMp8JblNgA2lB4JHd'         // Confirmed
 };
 
 // Global variable for Google API client
@@ -32,17 +32,23 @@ function loadGoogleApi() {
         resolve();
       }, (error) => {
         console.error('Google API init error:', error);
+        alert('Failed to initialize Google API. Check console for details.');
       });
     });
   });
 }
 
 async function uploadToGoogleDrive(file, folderId) {
-  if (!authInstance || !authInstance.isSignedIn.get()) {
+  if (!authInstance) {
+    alert('Google API not initialized. Please reload the page and sign in.');
+    return null;
+  }
+  if (!authInstance.isSignedIn.get()) {
     try {
       await authInstance.signIn();
+      console.log('Signed in successfully');
     } catch (error) {
-      alert('Google Drive authentication failed. Please sign in.');
+      alert('Google Drive authentication failed. Please sign in again or check your internet connection.');
       console.error('Sign-in error:', error);
       return null;
     }
@@ -64,10 +70,11 @@ async function uploadToGoogleDrive(file, folderId) {
       params: { uploadType: 'multipart' },
       body: form,
     });
+    console.log('Upload successful:', response.result.id);
     return `https://drive.google.com/uc?id=${response.result.id}`;
   } catch (error) {
     console.error('Upload error:', error);
-    alert('File upload failed. Please try again.');
+    alert('File upload failed. Check file size (max 15MB) or try again.');
     return null;
   }
 }
@@ -82,8 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const href = link.getAttribute('href');
       if (href.startsWith('#')) {
         document.getElementById(href.substring(1)).scrollIntoView({ behavior: 'smooth' });
-      } else {
+      } else if (href.startsWith('http')) {
         window.location.href = href;
+      } else {
+        window.location.href = 'https://frameofrevolution.netlify.app' + href; // Updated website
       }
     });
   });
@@ -107,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           const folderId = folderIds[formId.replace('-registration', '') || formId];
           if (!folderId) {
-            alert('No folder ID configured for this form.');
+            alert('No folder ID configured for this form. Contact ulphotoclub2024@gmail.com for support.');
             return;
           }
           const url = await uploadToGoogleDrive(file, folderId);
@@ -176,7 +185,14 @@ document.addEventListener('DOMContentLoaded', () => {
             volunteer_ref: data['Volunteer Reference'],
           };
           tableName = 'story_writing';
-          break;
+          const { error } = await supabase.from(tableName).insert(insertData);
+          if (error) {
+            console.error('Error saving to Supabase:', error);
+            alert('An error occurred. Please try again.');
+            return;
+          }
+          window.location.href = 'https://chat.whatsapp.com/DahFyu1GBuUHqBPFhvCar4'; // Redirect after save
+          return;
         case 'video-content':
           insertData = {
             name: data['Name'],
@@ -236,9 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         alert('Submission received. Thank you!');
         form.reset();
-        if (formId === 'story-writing') {
-          window.location.href = 'https://chat.whatsapp.com/DahFyu1GBuUHqBPFhvCar4'; // Updated WhatsApp link
-        }
       }
     });
   });
