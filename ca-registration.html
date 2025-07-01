@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frame of Revolution: Bangladesh 2.0 - Campus Ambassador</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Frame of Revolution: Bangladesh 2.0 - CA Registration</title>
+    <link rel="stylesheet" href="registration.css">
+    <link rel="icon" type="image/jpeg" href="frame_of_revolution_white_logo.jpeg">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -12,31 +13,27 @@
         <img src="frame_of_revolution_logo.png" alt="Event Logo" class="logo">
         <nav>
             <a href="index.html">Home</a>
-            <a href="ca-registration.html">Campus Ambassador</a>
-            <a href="mobile-registration.html">Mobile Photography</a>
-            <a href="camera-registration.html">Camera Photography</a>
             <a href="about-the-event.html">About The Event</a>
         </nav>
     </header>
     <main>
         <section class="hero">
             <img src="frame_of_revolution_bg.jpeg" alt="Event Background" class="background-img">
-            <div class="content-overlay">
+            <div class="content">
                 <h1>Campus Ambassador Application</h1>
-                <form id="ca-form">
-                    <input type="text" placeholder="Name" required>
-                    <input type="text" placeholder="Institute" required>
-                    <input type="text" placeholder="Current Class/Semester" required>
-                    <input type="tel" placeholder="Contact Number (WhatsApp)" required>
-                    <input type="url" placeholder="Facebook or Insta Link" required>
-                    <input type="email" placeholder="Mail Address" required>
-                    <input type="text" placeholder="Past CA Experience (Yes/No)" required>
-                    <textarea placeholder="Elaborate Experience (if any)" rows="4"></textarea>
-                    <input type="text" placeholder="Volunteer Reference (n/a if none)" required>
-                    <input type="text" placeholder="Director Reference (n/a if none)" required>
-                    <input type="file" accept="image/*" id="ca-photo" required>
+                <form id="ca-registration">
+                    <input type="text" name="Name" placeholder="Name" required>
+                    <input type="text" name="Institute" placeholder="Institute" required>
+                    <input type="text" name="Current Class/Semester" placeholder="Current Class/Semester you are reading in" required>
+                    <input type="tel" name="Contact Number (WhatsApp)" placeholder="Contact Number (WhatsApp)" required>
+                    <input type="url" name="Facebook or Insta Link" placeholder="Facebook or Insta account link" required>
+                    <input type="email" name="Mail Address" placeholder="Mail Address" required>
+                    <input type="text" name="Past CA Experience" placeholder="Do you have any past experiences working as a CA? (Yes/No)" required>
+                    <textarea name="Elaborate Experience" placeholder="If you have any experience, please elaborate" rows="4"></textarea>
+                    <input type="text" name="Volunteer Reference" placeholder="Volunteer reference (if none then write n/a)" required>
+                    <input type="text" name="Director Reference" placeholder="Director reference (if none then write n/a)" required>
+                    <input type="file" name="Photo" accept="image/*" id="ca-photo" required>
                     <button type="submit">Submit Application</button>
-                    <div id="integration-placeholder"></div>
                 </form>
             </div>
         </section>
