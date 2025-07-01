@@ -2,8 +2,8 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 // Supabase configuration
-const supabaseUrl = 'https://your-supabase-url.supabase.co';
-const supabaseKey = 'your-supabase-anon-key'; // Replace with your actual anon key
+const supabaseUrl = 'https://etddzvxpnwkwguzkkoke.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZGR6dnhwbndrd2d1emtrb2tlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzMDIyMTYsImV4cCI6MjA2Njg3ODIxNn0.eSZkuyRl-DlHJ8qMTcl_R8eh9Ce3CcetZilF9BUVRhY';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Google Drive folder IDs for 6 segments
@@ -16,17 +16,65 @@ const folderIds = {
   'video-content': '1MpPiEx6WaYMtPrwRMp8JblNgA2lB4JHd'
 };
 
-// Function to upload file to Google Drive (simplified placeholder)
-async function uploadToGoogleDrive(file, folderId) {
-  // Placeholder: Actual Google Drive API integration required
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const fileName = `${timestamp}_${file.name}`;
-  const mockUrl = `https://drive.google.com/uc?id=${folderId}&name=${fileName}`;
-  return mockUrl;
+// Global variable for Google API client
+let gapi = window.gapi;
+let authInstance = null;
+
+function loadGoogleApi() {
+  return new Promise((resolve) => {
+    gapi.load('client:auth2', () => {
+      gapi.client.init({
+        clientId: '797962726049-parp29f8dgqp8d14lo81cc31ikft8cuv.apps.googleusercontent.com',
+        scope: 'https://www.googleapis.com/auth/drive.file',
+        discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
+      }).then(() => {
+        authInstance = gapi.auth2.getAuthInstance();
+        resolve();
+      }, (error) => {
+        console.error('Google API init error:', error);
+      });
+    });
+  });
 }
 
-// Handle form submissions
+async function uploadToGoogleDrive(file, folderId) {
+  if (!authInstance || !authInstance.isSignedIn.get()) {
+    try {
+      await authInstance.signIn();
+    } catch (error) {
+      alert('Google Drive authentication failed. Please sign in.');
+      console.error('Sign-in error:', error);
+      return null;
+    }
+  }
+
+  const metadata = {
+    name: `${new Date().toISOString().replace(/[:.]/g, '-')}_${file.name}`,
+    parents: [folderId],
+  };
+
+  const form = new FormData();
+  form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+  form.append('file', file);
+
+  try {
+    const response = await gapi.client.request({
+      path: 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',
+      method: 'POST',
+      params: { uploadType: 'multipart' },
+      body: form,
+    });
+    return `https://drive.google.com/uc?id=${response.result.id}`;
+  } catch (error) {
+    console.error('Upload error:', error);
+    alert('File upload failed. Please try again.');
+    return null;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  loadGoogleApi().catch(console.error);
+
   const navLinks = document.querySelectorAll('nav a');
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
@@ -57,41 +105,140 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('File size exceeds 15MB limit.');
             return;
           }
-          const folderId = folderIds[formId];
+          const folderId = folderIds[formId.replace('-registration', '') || formId];
           if (!folderId) {
             alert('No folder ID configured for this form.');
             return;
           }
           const url = await uploadToGoogleDrive(file, folderId);
-          imageUrls.push(url);
+          if (url) imageUrls.push(url);
         }
-        data.imageUrls = imageUrls;
       }
 
-      const { error } = await supabase
-        .from('submissions')
-        .insert({
-          type: formId.replace('-registration', '') || formId, // Map form ID to submission type
-          created_at: new Date().toISOString(),
-          name: data['Name'],
-          institute: data['Institute'],
-          current_class: data['Current Class/Semester'],
-          contact_number: data['Contact Number (WhatsApp)'],
-          social_link: data['Facebook or Insta Link'],
-          mail_address: data['Mail Address'],
-          photo_title: data['Photo Title'],
-          ca_reference: data['CA Reference'],
-          club_reference: data['Club Reference'],
-          volunteer_ref: data['Volunteer Reference'],
-          image_urls: imageUrls.length ? imageUrls : null
-        });
+      // CA reference check for relevant segments
+      const caRef = data['CA Reference'] || 'n/a';
+      if (caRef !== 'n/a') {
+        const { data: caCodes, error: caError } = await supabase
+          .from('ca_reference_codes')
+          .select('code')
+          .eq('code', caRef);
+        if (caError || caCodes.length === 0) {
+          alert('Invalid CA Reference. Submission failed.');
+          return;
+        }
+      }
 
+      // Determine table and insert data based on form ID
+      let tableName, insertData;
+      switch (formId) {
+        case 'mobile-registration':
+          insertData = {
+            name: data['Name'],
+            institute: data['Institute'],
+            current_class: data['Current Class/Semester'],
+            contact_number: data['Contact Number (WhatsApp)'],
+            social_link: data['Facebook or Insta Link'],
+            mail_address: data['Mail Address'],
+            photo_title: data['Photo Title'],
+            ca_reference: caRef,
+            club_reference: data['Club Reference'],
+            volunteer_ref: data['Volunteer Reference'],
+            image_urls: imageUrls,
+          };
+          tableName = 'mobile_photography';
+          break;
+        case 'camera-registration':
+          insertData = {
+            name: data['Name'],
+            institute: data['Institute'],
+            current_class: data['Current Class/Semester'],
+            contact_number: data['Contact Number (WhatsApp)'],
+            social_link: data['Facebook or Insta Link'],
+            mail_address: data['Mail Address'],
+            photo_title: data['Photo Title'],
+            ca_reference: caRef,
+            club_reference: data['Club Reference'],
+            volunteer_ref: data['Volunteer Reference'],
+            image_urls: imageUrls,
+          };
+          tableName = 'camera_photography';
+          break;
+        case 'story-writing':
+          insertData = {
+            name: data['Name'],
+            institute: data['Institute'],
+            current_class: data['Current Class/Semester'],
+            contact_number: data['Contact Number (WhatsApp)'],
+            social_link: data['Facebook or Insta Link'],
+            mail_address: data['Mail Address'],
+            ca_reference: caRef,
+            club_reference: data['Club Reference'],
+            volunteer_ref: data['Volunteer Reference'],
+          };
+          tableName = 'story_writing';
+          break;
+        case 'video-content':
+          insertData = {
+            name: data['Name'],
+            institute: data['Institute'],
+            current_class: data['Current Class/Semester'],
+            contact_number: data['Contact Number (WhatsApp)'],
+            social_link: data['Facebook or Insta Link'],
+            mail_address: data['Mail Address'],
+            google_drive_link: data['Google Drive Link'],
+            ca_reference: caRef,
+            club_reference: data['Club Reference'],
+            volunteer_ref: data['Volunteer Reference'],
+          };
+          tableName = 'video_content';
+          break;
+        case 'poster-design':
+          insertData = {
+            name: data['Name'],
+            institute: data['Institute'],
+            current_class: data['Current Class/Semester'],
+            contact_number: data['Contact Number (WhatsApp)'],
+            social_link: data['Facebook or Insta Link'],
+            mail_address: data['Mail Address'],
+            photo_title: data['Photo Title'],
+            ca_reference: caRef,
+            club_reference: data['Club Reference'],
+            volunteer_ref: data['Volunteer Reference'],
+            image_urls: imageUrls,
+          };
+          tableName = 'poster_design';
+          break;
+        case 'ca-registration':
+          insertData = {
+            name: data['Name'],
+            institute: data['Institute'],
+            current_class: data['Current Class/Semester'],
+            contact_number: data['Contact Number (WhatsApp)'],
+            social_link: data['Facebook or Insta Link'],
+            mail_address: data['Mail Address'],
+            past_ca_experience: data['Past CA Experience'],
+            elaborate_experience: data['Elaborate Experience'],
+            volunteer_ref: data['Volunteer Reference'],
+            director_ref: data['Director Reference'],
+            photo_url: imageUrls[0] || null, // Single photo
+          };
+          tableName = 'ca_registration';
+          break;
+        default:
+          alert('Unknown form ID.');
+          return;
+      }
+
+      const { error } = await supabase.from(tableName).insert(insertData);
       if (error) {
         console.error('Error saving to Supabase:', error);
         alert('An error occurred. Please try again.');
       } else {
-        alert('Submission received. We will contact you later.');
+        alert('Submission received. Thank you!');
         form.reset();
+        if (formId === 'story-writing') {
+          window.location.href = 'https://chat.whatsapp.com/DahFyu1GBuUHqBPFhvCar4'; // Updated WhatsApp link
+        }
       }
     });
   });
