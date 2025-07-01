@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frame of Revolution: Bangladesh 2.0 - Mobile Photography</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="sticky-nav">
+        <img src="frame_of_revolution_logo.png" alt="Event Logo" class="logo">
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="ca-registration.html">Campus Ambassador</a>
+            <a href="mobile-registration.html">Mobile Photography</a>
+            <a href="camera-registration.html">Camera Photography</a>
+            <a href="about-the-event.html">About The Event</a>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <img src="frame_of_revolution_bg.jpeg" alt="Event Background" class="background-img">
+            <div class="content-overlay">
+                <h1>Mobile Photography Submission</h1>
+                <form id="mobile-form">
+                    <input type="text" placeholder="Name" required>
+                    <input type="text" placeholder="Institute" required>
+                    <input type="text" placeholder="Current Class/Semester" required>
+                    <input type="tel" placeholder="Contact Number (WhatsApp)" required>
+                    <input type="url" placeholder="Facebook or Insta Link" required>
+                    <input type="email" placeholder="Mail Address" required>
+                    <input type="file" accept="image/*" multiple max="2" id="mobile-photos" required>
+                    <input type="text" placeholder="Photo Title" required>
+                    <input type="text" placeholder="CA Reference (n/a if none)" required>
+                    <input type="text" placeholder="Club Reference (n/a if none)" required>
+                    <input type="text" placeholder="Volunteer Reference (n/a if none)" required>
+                    <button type="submit">Submit Photos</button>
+                    <div id="integration-placeholder"></div>
+                </form>
+            </div>
+        </section>
+    </main>
+    <script src="main.js" type="module"></script>
+</body>
+</html>
