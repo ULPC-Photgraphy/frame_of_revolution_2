@@ -230,3 +230,86 @@ p {
     from { opacity: 0; transform: translateY(2.5rem); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* Responsive styles for screens below 768px */
+@media (max-width: 768px) {
+
+    /* Reduce navbar padding for smaller screens */
+    .sticky-nav {
+        padding: 0 1rem;
+    }
+
+    nav a {
+        font-size: 1rem;
+        margin-left: 1rem;
+    }
+
+    .logo {
+        width: 5rem;
+        height: auto;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        letter-spacing: 0.3rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    h3 {
+        font-size: 1.75rem;
+    }
+
+    p {
+        font-size: 1.2rem;
+    }
+
+    .event-date p {
+        font-size: 1.1rem;
+    }
+
+    /* Responsive organizer grid */
+    .organizers-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .organizer-logo {
+        width: 100px;
+        height: 100px;
+    }
+
+    /* Responsive segment buttons */
+    .segment-buttons {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+    }
+
+    .segment-button {
+        font-size: 1.2rem;
+        padding: 1rem 1.5rem;
+    }
+
+    /* Ensure content doesn't overflow horizontally */
+    .content {
+        width: 95%;
+        max-width: 100%;
+        padding: 1.5rem;
+        margin: 3rem auto 2rem;
+    }
+
+    /* Prevent images from overflowing container */
+    .organizer-logo,
+    .background-img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Segment cards spacing adjustments */
+    .segment {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+}
