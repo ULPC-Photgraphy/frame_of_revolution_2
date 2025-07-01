@@ -1,37 +1,24 @@
-// Import the functions you need from the SDKs
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+// Import the Supabase client
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDDcCW3QkNHSfOsmFe_jUBrDKdYGWiv8_M",
-  authDomain: "frameofrevolutionbangladesh2.firebaseapp.com",
-  projectId: "frameofrevolutionbangladesh2",
-  storageBucket: "frameofrevolutionbangladesh2.firebasestorage.app",
-  messagingSenderId: "103773409483",
-  appId: "1:103773409483:web:ff2f9802614840dd3b0b4e",
-  measurementId: "G-GV4Q4NFF4Y"
-};
+// Supabase configuration
+const supabaseUrl = 'https://your-supabase-url.supabase.co';
+const supabaseKey = 'your-supabase-anon-key'; // Replace with your actual anon key
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const database = getDatabase(app);
-const storage = getStorage(app);
-
-// Google Drive folder IDs
+// Google Drive folder IDs for 6 segments
 const folderIds = {
   'ca-registration': '1KSIbsfpRnj1y8yt32vC7sTFWA10arFbb',
   'mobile-registration': '1x7TaP1VMzTdW7F9HHOWRR8iGUR0ZsybF',
-  'camera-registration': '1aSm3l5JJA8oJfV6Q8Bi3UaWBPRbnIURK'
+  'camera-registration': '1aSm3l5JJA8oJfV6Q8Bi3UaWBPRbnIURK',
+  'story-writing': '13vGQywI8uN2rwlRYRbSXHuoWZ5Ntu4WI',
+  'poster-design': '1ZyMJ7z7ybj_5D9L5DAS3fksPOEV3phDy',
+  'video-content': '1MpPiEx6WaYMtPrwRMp8JblNgA2lB4JHd'
 };
 
 // Function to upload file to Google Drive (simplified placeholder)
 async function uploadToGoogleDrive(file, folderId) {
-  // This is a placeholder. Actual implementation requires Google Drive API integration.
-  // For now, we'll simulate by returning a mock URL.
+  // Placeholder: Actual Google Drive API integration required
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const fileName = `${timestamp}_${file.name}`;
   const mockUrl = `https://drive.google.com/uc?id=${folderId}&name=${fileName}`;
@@ -71,22 +58,41 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
           }
           const folderId = folderIds[formId];
+          if (!folderId) {
+            alert('No folder ID configured for this form.');
+            return;
+          }
           const url = await uploadToGoogleDrive(file, folderId);
           imageUrls.push(url);
         }
         data.imageUrls = imageUrls;
       }
 
-      const dbRef = ref(database, `${formId}/${Date.now()}`);
-      set(dbRef, data)
-        .then(() => {
-          alert('Submission received. We will contact you later.');
-          form.reset();
-        })
-        .catch((error) => {
-          console.error('Error saving to Firebase:', error);
-          alert('An error occurred. Please try again.');
+      const { error } = await supabase
+        .from('submissions')
+        .insert({
+          type: formId.replace('-registration', '') || formId, // Map form ID to submission type
+          created_at: new Date().toISOString(),
+          name: data['Name'],
+          institute: data['Institute'],
+          current_class: data['Current Class/Semester'],
+          contact_number: data['Contact Number (WhatsApp)'],
+          social_link: data['Facebook or Insta Link'],
+          mail_address: data['Mail Address'],
+          photo_title: data['Photo Title'],
+          ca_reference: data['CA Reference'],
+          club_reference: data['Club Reference'],
+          volunteer_ref: data['Volunteer Reference'],
+          image_urls: imageUrls.length ? imageUrls : null
         });
+
+      if (error) {
+        console.error('Error saving to Supabase:', error);
+        alert('An error occurred. Please try again.');
+      } else {
+        alert('Submission received. We will contact you later.');
+        form.reset();
+      }
     });
   });
 });
