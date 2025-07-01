@@ -8,12 +8,12 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Google Drive folder IDs for 6 segments
 const folderIds = {
-  'ca-registration': '1KSIbsfpRnj1y8yt32vC7sTFWA10arFbb',    // Added for CA
-  'mobile-registration': '1x7TaP1VMzTdW7F9HHOWRR8iGUR0ZsybF',  // Confirmed
-  'camera-registration': '1aSm3l5JJA8oJfV6Q8Bi3UaWBPRbnIURK', // Confirmed
-  'story-writing': '13vGQywI8uN2rwlRYRbSXHuoWZ5Ntu4WI',      // Confirmed
-  'poster-design': '1ZyMJ7z7ybj_5D9L5DAS3fksPOEV3phDy',        // Confirmed
-  'video-content': '1MpPiEx6WaYMtPrwRMp8JblNgA2lB4JHd'         // Confirmed
+  'ca-registration': '1KSIbsfpRnj1y8yt32vC7sTFWA10arFbb',
+  'mobile-registration': '1x7TaP1VMzTdW7F9HHOWRR8iGUR0ZsybF',
+  'camera-registration': '1aSm3l5JJA8oJfV6Q8Bi3UaWBPRbnIURK',
+  'story-writing': '13vGQywI8uN2rwlRYRbSXHuoWZ5Ntu4WI',
+  'poster-design': '1ZyMJ7z7ybj_5D9L5DAS3fksPOEV3phDy',
+  'video-content': '1MpPiEx6WaYMtPrwRMp8JblNgA2lB4JHd'
 };
 
 // Global variable for Google API client
@@ -21,7 +21,12 @@ let gapi = window.gapi;
 let authInstance = null;
 
 function loadGoogleApi() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
+    if (!gapi) {
+      console.error('Google API script not loaded. Ensure <script src="https://apis.google.com/js/api.js"> is in your HTML.');
+      reject(new Error('Google API script not loaded'));
+      return;
+    }
     gapi.load('client:auth2', () => {
       gapi.client.init({
         clientId: '797962726049-parp29f8dgqp8d14lo81cc31ikft8cuv.apps.googleusercontent.com',
@@ -29,10 +34,11 @@ function loadGoogleApi() {
         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
       }).then(() => {
         authInstance = gapi.auth2.getAuthInstance();
+        console.log('Google API initialized successfully');
         resolve();
       }, (error) => {
-        console.error('Google API init error:', error);
-        alert('Failed to initialize Google API. Check console for details.');
+        console.error('Google API init error:', error.details);
+        reject(error);
       });
     });
   });
@@ -40,7 +46,7 @@ function loadGoogleApi() {
 
 async function uploadToGoogleDrive(file, folderId) {
   if (!authInstance) {
-    alert('Google API not initialized. Please reload the page and sign in.');
+    alert('Google API not initialized. Please reload the page and try again.');
     return null;
   }
   if (!authInstance.isSignedIn.get()) {
@@ -80,7 +86,10 @@ async function uploadToGoogleDrive(file, folderId) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadGoogleApi().catch(console.error);
+  loadGoogleApi().catch((error) => {
+    console.error('Failed to load Google API:', error);
+    alert('Failed to load Google API. Please ensure you have an internet connection and try reloading the page. Contact ulphotoclub2024@gmail.com for support.');
+  });
 
   const navLinks = document.querySelectorAll('nav a');
   navLinks.forEach(link => {
@@ -92,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (href.startsWith('http')) {
         window.location.href = href;
       } else {
-        window.location.href = 'https://frameofrevolution.netlify.app' + href; // Updated website
+        window.location.href = 'https://frameofrevolution.netlify.app' + href;
       }
     });
   });
@@ -115,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
           }
           const folderId = folderIds[formId.replace('-registration', '') || formId];
+          console.log(`Form ID: ${formId}, Folder ID: ${folderId}`); // Debug log
           if (!folderId) {
             alert('No folder ID configured for this form. Contact ulphotoclub2024@gmail.com for support.');
             return;
@@ -137,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // Determine table and insert data based on form ID
+      // Determine table and insert data based on formId
       let tableName, insertData;
       switch (formId) {
         case 'mobile-registration':
@@ -191,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('An error occurred. Please try again.');
             return;
           }
-          window.location.href = 'https://chat.whatsapp.com/DahFyu1GBuUHqBPFhvCar4'; // Redirect after save
+          window.location.href = 'https://chat.whatsapp.com/DahFyu1GBuUHqBPFhvCar4';
           return;
         case 'video-content':
           insertData = {
@@ -236,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
             elaborate_experience: data['Elaborate Experience'],
             volunteer_ref: data['Volunteer Reference'],
             director_ref: data['Director Reference'],
-            photo_url: imageUrls[0] || null, // Single photo
+            photo_url: imageUrls[0] || null,
           };
           tableName = 'ca_registration';
           break;
