@@ -1,4 +1,3 @@
-// Import the Supabase client
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 // Supabase configuration
@@ -33,14 +32,23 @@ document.addEventListener('DOMContentLoaded', () => {
       let imageUrls = [];
 
       // Validate link for segments that require it
-      if (['ca-registration', 'mobile-registration', 'camera-registration', 'poster-design', 'video-content'].includes(formId)) {
-        const link = data['Link'] || data['Google Drive Link']; // Use 'Link' for most, 'Google Drive Link' for video-content
+      if (['ca-registration', 'mobile-registration', 'camera-registration', 'poster-design', 'video-content', 'club-collaboration'].includes(formId)) {
+        const link = data['Link'] || data['Google Drive Link'] || data['Logo Links'];
         if (link) {
-          if (!link.match(/^https:\/\/(drive\.google\.com\/(file\/d\/|open\?id=)|mega\.nz\/|workupload\.com\/)/)) {
-            alert('Please provide a valid Google Drive, Mega, or Workupload link.');
+          // Split comma-separated links for club-collaboration (allowing multiple logo URLs)
+          const links = formId === 'club-collaboration' ? link.split(',').map(l => l.trim()) : [link];
+          for (const l of links) {
+            if (!l.match(/^https:\/\/(drive\.google\.com\/(file\/d\/|open\?id=)|mega\.nz\/|workupload\.com\/)/)) {
+              alert('Please provide valid Google Drive, Mega, or Workupload link(s).');
+              return;
+            }
+            imageUrls.push(l);
+          }
+          // Ensure club-collaboration has up to 2 links
+          if (formId === 'club-collaboration' && imageUrls.length > 2) {
+            alert('Please provide at most two logo links (with and without background).');
             return;
           }
-          imageUrls.push(link);
         } else if (formId !== 'video-content') { // video-content already requires link
           alert('A valid link is required.');
           return;
@@ -113,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ca_reference: caRef,
             club_reference: data['Club Reference'],
             volunteer_ref: data['Volunteer Reference'],
-            image_urls: imageUrls.length > 0 ? imageUrls : null, // Store optional link
+            image_urls: imageUrls.length > 0 ? imageUrls : null,
           };
           tableName = 'story_writing';
           const { error: storyError } = await supabase.from(tableName).insert(insertData);
@@ -132,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
             contact_number: data['Contact Number (WhatsApp)'],
             social_link: data['Facebook or Insta Link'],
             mail_address: data['Mail Address'],
-            google_drive_link: data['Google Drive Link'], // Keep existing field name
+            google_drive_link: data['Google Drive Link'],
             ca_reference: caRef,
             club_reference: data['Club Reference'],
             volunteer_ref: data['Volunteer Reference'],
@@ -170,6 +178,21 @@ document.addEventListener('DOMContentLoaded', () => {
             photo_url: imageUrls[0] || null,
           };
           tableName = 'ca_registration';
+          break;
+        case 'club-collaboration':
+          insertData = {
+            name: data['Name'],
+            contact_number: data['Contact Number (WhatsApp)'],
+            institute: data['Institute'],
+            club_name: data['Club Name'],
+            club_email: data['Club Email'],
+            current_post: data['Current Post'],
+            ca_reference: caRef,
+            volunteer_ref: data['Volunteer Reference'],
+            director_ref: data['Director Reference'],
+            logo_urls: imageUrls.length > 0 ? imageUrls : null,
+          };
+          tableName = 'club_collaboration';
           break;
         default:
           alert('Unknown form ID.');
