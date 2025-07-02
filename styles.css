@@ -179,7 +179,7 @@ p {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.6rem;
     color: #FFFFFF;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0,alf);
     border: 0.25rem solid #A0A0A0; /* Thicker border for visibility */
     border-radius: 1rem;
     text-decoration: none;
@@ -203,9 +203,34 @@ p {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Footer styles */
+.footer {
+    text-align: center;
+    padding: 1.5rem 2rem;
+    background: rgba(28, 37, 38, 0.9);
+    border-top: 0.125rem solid #A0A0A0;
+    backdrop-filter: blur(0.625rem);
+    position: relative;
+    width: 100%;
+    color: #E0E0E0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    line-height: 1.8;
+}
+
+.footer a {
+    color: #E0E0E0;
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.footer a:hover {
+    color: #FFFFFF;
+    text-shadow: 0 0 0.3125rem #FFFFFF;
+}
+
 /* Responsive styles for screens below 768px */
 @media (max-width: 768px) {
-
     /* Reduce navbar padding for smaller screens */
     .sticky-nav {
         padding: 0 1rem;
@@ -231,11 +256,11 @@ p {
     }
 
     p {
-        font-size: 1.2rem;
+    font-size: 1.2rem;
     }
 
     .event-date p {
-        font-size: 1.1rem;
+    font-size: 1.1rem;
     }
 
     /* Responsive organizer grid */
@@ -273,5 +298,11 @@ p {
     .background-img {
         max-width: 100%;
         height: auto;
+    }
+
+    /* Responsive footer */
+    .footer {
+        padding: 1rem;
+        font-size: 1rem;
     }
 }

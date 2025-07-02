@@ -226,6 +226,32 @@ p {
     background: rgba(0, 0, 0, 0.7);
 }
 
+/* Footer styles */
+.footer {
+    text-align: center;
+    padding: 1.5rem 2rem;
+    background: rgba(28, 37, 38, 0.9);
+    border-top: 0.125rem solid #A0A0A0;
+    backdrop-filter: blur(0.625rem);
+    position: relative;
+    width: 100%;
+    color: #E0E0E0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    line-height: 1.8;
+}
+
+.footer a {
+    color: #E0E0E0;
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.footer a:hover {
+    color: #FFFFFF;
+    text-shadow: 0 0 0.3125rem #FFFFFF;
+}
+
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(2.5rem); }
     to { opacity: 1; transform: translateY(0); }
