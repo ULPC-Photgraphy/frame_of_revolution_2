@@ -1,33 +1,19 @@
 /* Animation for the pulsing hotspot */
 @keyframes CursorAnim {
     0% {
-        transform: scale(1) translate(-50%, -50%);
+        transform: scale(1);
     }
     100% {
-        transform: scale(0.7) translate(-50%, -50%);
+        transform: scale(0.7);
     }
 }
 
-/* Apply pulsing dot globally */
+/* Apply custom cursor globally */
 body {
-    cursor: none;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M6 6 L18 18 L14 18 L18 26 L10 18 L14 18 L6 6" fill="%231c2526" stroke="%23a0a0a0" stroke-width="2"/><circle cx="16" cy="16" r="4" fill="%23bcbcbc" style="animation: CursorAnim 0.5s infinite alternate;"/></svg>'), auto;
 }
 
-body::after {
-    content: '';
-    width: 4px;
-    height: 4px;
-    background: #bcbcbc;
-    border-radius: 50%;
-    position: absolute;
-    left: var(--cursor-x, 0);
-    top: var(--cursor-y, 0);
-    animation: CursorAnim 0.5s infinite alternate;
-    pointer-events: none;
-    z-index: 9999;
-}
-
-/* Hide default cursor for all interactive elements */
+/* Hide default cursor for interactive elements, use same custom cursor */
 a,
 button,
 .segment-button,
@@ -46,10 +32,10 @@ textarea,
 .help-icon,
 .crosshair,
 .moveable {
-    cursor: none;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M6 6 L18 18 L14 18 L18 26 L10 18 L14 18 L6 6" fill="%231c2526" stroke="%23a0a0a0" stroke-width="2"/><circle cx="16" cy="16" r="4" fill="%23bcbcbc" style="animation: CursorAnim 0.5s infinite alternate;"/></svg>'), auto;
 }
 
-/* Disable pulsing dot on touch devices */
+/* Disable custom cursor on touch devices */
 @media (pointer: coarse) {
     body,
     a,
@@ -71,8 +57,5 @@ textarea,
     .crosshair,
     .moveable {
         cursor: auto;
-    }
-    body::after {
-        display: none;
     }
 }
