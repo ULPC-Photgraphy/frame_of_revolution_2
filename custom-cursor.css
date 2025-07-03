@@ -1,37 +1,33 @@
-/* Animation for the custom cursor */
-@keyframes cursorAnim {
+/* Animation for the pulsing hotspot */
+@keyframes CursorAnim {
     0% {
-        transform: scale(1);
-        opacity: 0.8;
+        transform: scale(1) translate(-50%, -50%);
     }
     100% {
-        transform: scale(1.2);
-        opacity: 1;
+        transform: scale(0.7) translate(-50%, -50%);
     }
 }
 
-/* Custom cursor applied globally */
+/* Apply pulsing dot globally */
 body {
     cursor: none;
 }
 
 body::after {
     content: '';
-    width: 20px;
-    height: 20px;
-    border: 1px solid #a0a0a0;
+    width: 4px;
+    height: 4px;
+    background: #bcbcbc;
     border-radius: 50%;
-    background: #1c2526;
-    box-shadow: 0 0 8px #bcbcbc;
     position: absolute;
-    transition-duration: 200ms;
-    transition-timing-function: ease-out;
-    animation: cursorAnim 0.5s infinite alternate;
+    left: var(--cursor-x, 0);
+    top: var(--cursor-y, 0);
+    animation: CursorAnim 0.5s infinite alternate;
     pointer-events: none;
     z-index: 9999;
 }
 
-/* Ensure interactive elements also hide default cursor */
+/* Hide default cursor for all interactive elements */
 a,
 button,
 .segment-button,
@@ -53,10 +49,9 @@ textarea,
     cursor: none;
 }
 
-/* Disable custom cursor on touch devices */
+/* Disable pulsing dot on touch devices */
 @media (pointer: coarse) {
     body,
-    body::after,
     a,
     button,
     .segment-button,

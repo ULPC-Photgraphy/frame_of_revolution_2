@@ -6,6 +6,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Navigation link handling
   const navLinks = document.querySelectorAll('nav a');
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
@@ -21,6 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Custom cursor positioning
+  document.addEventListener('mousemove', (e) => {
+    document.body.style.setProperty('--cursor-x', `${e.clientX}px`);
+    document.body.style.setProperty('--cursor-y', `${e.clientY}px`);
+  });
+
+  // Form submission handling
   const forms = document.querySelectorAll('form');
   forms.forEach(form => {
     form.addEventListener('submit', async (e) => {
