@@ -40,14 +40,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Validate social media link (must contain 'facebook' or 'instagram')
-      const socialLink = data['Facebook or Insta Link'] || data['Club Social Link'];
-      if (!socialLink || !/facebook|instagram/i.test(socialLink)) {
-        alert('Social media link must contain "facebook" or "instagram".');
-        return;
+      // Validate social media link (must contain 'facebook' or 'instagram') for relevant forms
+      if (['mobile-registration', 'camera-registration', 'story-writing', 'video-content', 'poster-design', 'ca-registration'].includes(formId)) {
+        const socialLink = data['Facebook or Insta Link'];
+        if (!socialLink || !/facebook|instagram/i.test(socialLink)) {
+          alert('Social media link must contain "facebook" or "instagram".');
+          return;
+        }
       }
 
-      // Collect links without validation
+      // Collect links without validation for specific forms
       if (['ca-registration', 'mobile-registration', 'camera-registration', 'poster-design', 'video-content', 'club-collaboration'].includes(formId)) {
         const link = data['Link'] || data['Google Drive Link'] || data['Logo Links'];
         if (link) {
@@ -58,9 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please provide at most two logo links (with and without background).');
             return;
           }
-        } else if (formId !== 'video-content') { // video-content already requires link
-          alert('A valid link is required.');
-          return;
         }
       } else if (formId === 'story-writing' && data['Link']) {
         imageUrls.push(data['Link']);
