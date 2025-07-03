@@ -1,61 +1,123 @@
 /* Animation for the pulsing hotspot */
 @keyframes CursorAnim {
     0% {
-        transform: scale(1);
+        transform: scale(1) translate(-50%, -50%);
     }
     100% {
-        transform: scale(0.7);
+        transform: scale(0.7) translate(-50%, -50%);
     }
 }
 
-/* Apply custom cursor globally */
+/* Default cursor with pulsing hotspot */
 body {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M6 6 L18 18 L14 18 L18 26 L10 18 L14 18 L6 6" fill="%231c2526" stroke="%23a0a0a0" stroke-width="2"/><circle cx="16" cy="16" r="4" fill="%23bcbcbc" style="animation: CursorAnim 0.5s infinite alternate;"/></svg>'), auto;
+    cursor: url('/cursor-pngs/cursor-default.png') 16 16, auto;
 }
 
-/* Hide default cursor for interactive elements, use same custom cursor */
-a,
-button,
-.segment-button,
-input[type="submit"],
-input[type="button"],
+body::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: #bcbcbc;
+    border-radius: 50%;
+    position: absolute;
+    left: var(--cursor-x, 0);
+    top: var(--cursor-y, 0);
+    animation: CursorAnim 0.5s infinite alternate;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Hover cursor for interactive elements */
+a:hover,
+button:hover,
+.segment-button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+.organizer-logo:hover {
+    cursor: url('/cursor-pngs/cursor-hover.png') 16 16, pointer;
+}
+
+/* Text input cursor */
 input[type="text"],
 input[type="email"],
 input[type="tel"],
 input[type="url"],
-textarea,
-.organizer-logo,
-.grab-zone,
-.zoomable-img,
-.loading-area,
-.blocking-ui,
-.help-icon,
-.crosshair,
-.moveable {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M6 6 L18 18 L14 18 L18 26 L10 18 L14 18 L6 6" fill="%231c2526" stroke="%23a0a0a0" stroke-width="2"/><circle cx="16" cy="16" r="4" fill="%23bcbcbc" style="animation: CursorAnim 0.5s infinite alternate;"/></svg>'), auto;
+textarea {
+    cursor: url('/cursor-pngs/cursor-textinput.png') 16 16, text;
 }
 
-/* Disable custom cursor on touch devices */
+/* Disabled cursor */
+button:disabled,
+.segment-button:disabled,
+input[type="submit"]:disabled,
+input[type="button"]:disabled {
+    cursor: url('/cursor-pngs/cursor-unavailable.png') 16 16, not-allowed;
+}
+
+/* Resize cursors for draggable elements (if applicable) */
+.grab-zone {
+    cursor: url('/cursor-pngs/cursor-nwresize.png') 16 16, nw-resize;
+}
+
+.grab-zone:active {
+    cursor: url('/cursor-pngs/cursor-neresize.png') 16 16, ne-resize;
+}
+
+/* Zoom cursor (if applicable, e.g., gallery previews) */
+.zoomable-img {
+    cursor: url('/cursor-pngs/cursor-hover.png') 16 16, zoom-in;
+}
+
+/* Loading or waiting cursor (if applicable, e.g., form submission) */
+.loading-area,
+.blocking-ui {
+    cursor: url('/cursor-pngs/cursor-unavailable.png') 16 16, wait;
+}
+
+/* Help cursor (if applicable, e.g., tooltips) */
+.help-icon {
+    cursor: url('/cursor-pngs/cursor-hover.png') 16 16, help;
+}
+
+/* Crosshair cursor (if applicable, e.g., image editors) */
+.crosshair {
+    cursor: url('/cursor-pngs/cursor-swresize.png') 16 16, crosshair;
+}
+
+/* Move cursor (if applicable, e.g., movable elements) */
+.moveable {
+    cursor: url('/cursor-pngs/cursor-seresize.png') 16 16, move;
+}
+
+/* Disable custom cursors and pulsing dot on touch devices */
 @media (pointer: coarse) {
     body,
-    a,
-    button,
-    .segment-button,
-    input[type="submit"],
-    input[type="button"],
+    a:hover,
+    button:hover,
+    .segment-button:hover,
+    input[type="submit"]:hover,
+    input[type="button"]:hover,
     input[type="text"],
     input[type="email"],
     input[type="tel"],
     input[type="url"],
     textarea,
-    .organizer-logo,
+    button:disabled,
+    .segment-button:disabled,
+    input[type="submit"]:disabled,
+    input[type="button"]:disabled,
     .grab-zone,
+    .grab-zone:active,
     .zoomable-img,
     .loading-area,
     .blocking-ui,
     .help-icon,
     .crosshair,
-    .moveable {
+    .moveable,
+    .organizer-logo:hover {
         cursor: auto;
+    }
+    body::after {
+        display: none;
     }
 }

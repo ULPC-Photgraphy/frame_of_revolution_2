@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Custom cursor positioning
+  // Pulsing hotspot positioning
   document.addEventListener('mousemove', (e) => {
     document.body.style.setProperty('--cursor-x', `${e.clientX}px`);
     document.body.style.setProperty('--cursor-y', `${e.clientY}px`);
