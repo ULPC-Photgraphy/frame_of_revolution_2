@@ -4,7 +4,7 @@
         transform: scale(1) translate(-50%, -50%);
     }
     100% {
-        transform: scale(0.7) translate(-50%, -50%);
+        transform: scale(3) translate(-50%, -50%);
     }
 }
 
@@ -15,8 +15,8 @@ body {
 
 body::after {
     content: '';
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
     background: #bcbcbc;
     border-radius: 50%;
     position: absolute;
@@ -24,7 +24,7 @@ body::after {
     top: var(--cursor-y, 0);
     animation: CursorAnim 0.5s infinite alternate;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 1;
 }
 
 /* Hover cursor for interactive elements */

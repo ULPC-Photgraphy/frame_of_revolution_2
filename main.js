@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Pulsing hotspot positioning
   document.addEventListener('mousemove', (e) => {
-    document.body.style.setProperty('--cursor-x', `${e.clientX}px`);
-    document.body.style.setProperty('--cursor-y', `${e.clientY}px`);
+    document.body.style.setProperty('--cursor-x', `${e.clientX - 6}px`); // Offset by half of 12px
+    document.body.style.setProperty('--cursor-y', `${e.clientY - 6}px`); // Offset by half of 12px
   });
 
   // Form submission handling
