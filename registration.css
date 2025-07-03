@@ -107,10 +107,8 @@ h1 {
 
 p {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 0.5rem;
+    font-size: 1rem;
     color: #FFFFFF;
-    text-transform: uppercase;
-    letter-spacing: 0.25rem;
     text-shadow: 0 0 0.5rem #FFFFFF;
     margin-bottom: 2rem;
 }
