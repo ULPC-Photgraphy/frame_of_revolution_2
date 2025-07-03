@@ -1,30 +1,6 @@
-/* Animation for the pulsing hotspot */
-@keyframes CursorAnim {
-    0% {
-        transform: scale(1) translate(-50%, -50%);
-    }
-    100% {
-        transform: scale(3) translate(-50%, -50%);
-    }
-}
-
-/* Default cursor with pulsing hotspot */
+/* Default cursor */
 body {
     cursor: url('/cursor-pngs/cursor-default.png') 16 16, auto;
-}
-
-body::after {
-    content: '';
-    width: 12px;
-    height: 12px;
-    background: #bcbcbc;
-    border-radius: 50%;
-    position: absolute;
-    left: var(--cursor-x, 0);
-    top: var(--cursor-y, 0);
-    animation: CursorAnim 0.5s infinite alternate;
-    pointer-events: none;
-    z-index: 1;
 }
 
 /* Hover cursor for interactive elements */
@@ -89,7 +65,7 @@ input[type="button"]:disabled {
     cursor: url('/cursor-pngs/cursor-seresize.png') 16 16, move;
 }
 
-/* Disable custom cursors and pulsing dot on touch devices */
+/* Disable custom cursors on touch devices */
 @media (pointer: coarse) {
     body,
     a:hover,
@@ -116,8 +92,5 @@ input[type="button"]:disabled {
     .moveable,
     .organizer-logo:hover {
         cursor: auto;
-    }
-    body::after {
-        display: none;
     }
 }
