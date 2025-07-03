@@ -31,19 +31,26 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = Object.fromEntries(formData.entries());
       let imageUrls = [];
 
-      // Validate link for segments that require it
+      // Validate phone number (must start with '01' and be 11 digits)
+      const contactNumber = data['Contact Number (WhatsApp)'];
+      if (!contactNumber.match(/^01\d{9}$/)) {
+        alert('Contact Number must start with "01" and be exactly 11 digits.');
+        return;
+      }
+
+      // Validate social media link (must contain 'facebook' or 'instagram')
+      const socialLink = data['Facebook or Insta Link'] || data['Club Social Link'];
+      if (!socialLink || !/facebook|instagram/i.test(socialLink)) {
+        alert('Social media link must contain "facebook" or "instagram".');
+        return;
+      }
+
+      // Collect links without validation
       if (['ca-registration', 'mobile-registration', 'camera-registration', 'poster-design', 'video-content', 'club-collaboration'].includes(formId)) {
         const link = data['Link'] || data['Google Drive Link'] || data['Logo Links'];
         if (link) {
           // Split comma-separated links for club-collaboration (allowing multiple logo URLs)
-          const links = formId === 'club-collaboration' ? link.split(',').map(l => l.trim()) : [link];
-          for (const l of links) {
-            if (!l.match(/^https:\/\/(drive\.google\.com\/(file\/d\/|open\?id=)|mega\.nz\/|workupload\.com\/)/)) {
-              alert('Please provide valid Google Drive, Mega, or Workupload link(s).');
-              return;
-            }
-            imageUrls.push(l);
-          }
+          imageUrls = formId === 'club-collaboration' ? link.split(',').map(l => l.trim()) : [link];
           // Ensure club-collaboration has up to 2 links
           if (formId === 'club-collaboration' && imageUrls.length > 2) {
             alert('Please provide at most two logo links (with and without background).');
@@ -54,11 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
       } else if (formId === 'story-writing' && data['Link']) {
-        // Optional link for story-writing
-        if (!data['Link'].match(/^https:\/\/(drive\.google\.com\/(file\/d\/|open\?id=)|mega\.nz\/|workupload\.com\/)/)) {
-          alert('Please provide a valid Google Drive, Mega, or Workupload link.');
-          return;
-        }
         imageUrls.push(data['Link']);
       }
 

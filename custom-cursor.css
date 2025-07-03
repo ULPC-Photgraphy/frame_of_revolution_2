@@ -1,0 +1,115 @@
+/* Default cursor for the body */
+body {
+    cursor: url('/cursor-pngs/cursor-default.png'), auto;
+}
+
+/* Hover/Select for interactive elements */
+a:hover,
+button:hover,
+.segment-button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+.organizer-logo:hover {
+    cursor: url('/cursor-pngs/cursor-hover.png'), pointer;
+}
+
+/* Click/Active state for interactive elements */
+a:active,
+button:active,
+.segment-button:active,
+input[type="submit"]:active,
+input[type="button"]:active {
+    cursor: url('/cursor-pngs/cursor-click.png'), pointer;
+}
+
+/* Disabled buttons and inputs */
+button:disabled,
+.segment-button:disabled,
+input[type="submit"]:disabled,
+input[type="button"]:disabled {
+    cursor: url('/cursor-pngs/cursor-unavailable.png'), not-allowed;
+}
+
+/* Text input fields and textareas */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+textarea {
+    cursor: url('/cursor-pngs/cursor-textinput.png'), text;
+}
+
+/* Grab cursor (for draggable elements, if implemented) */
+.grab-zone {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="%231c2526" stroke="%23a0a0a0" stroke-width="2" filter="url(%23glow)"/><defs><filter id="glow"><feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="%23bcbcbc"/></filter></defs></svg>'), grab;
+}
+
+/* Grabbing cursor (active drag) */
+.grab-zone:active {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="10" fill="%231c2526" stroke="%23a0a0a0" stroke-width="2" filter="url(%23glow)"/><defs><filter id="glow"><feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="%23bcbcbc"/></filter></defs></svg>'), grabbing;
+}
+
+/* Zoomable images (e.g., for gallery previews, if implemented) */
+.zoomable-img {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="12" cy="12" r="8" fill="%231c2526" stroke="%23a0a0a0" stroke-width="2"/><line x1="18" y1="18" x2="22" y2="22" stroke="%23a0a0a0" stroke-width="2"/><circle cx="12" cy="12" r="8" fill="none" stroke="%23bcbcbc" stroke-width="2" filter="url(%23glow)"/><defs><filter id="glow"><feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="%23bcbcbc"/></filter></defs></svg>'), zoom-in;
+}
+
+/* Loading state (e.g., during form submission) */
+.loading-area {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="%231c2526" stroke="%23a0a0a0" stroke-width="2" stroke-dasharray="5,5" filter="url(%23glow)"/><defs><filter id="glow"><feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="%23bcbcbc"/></filter></defs></svg>'), progress;
+}
+
+/* Blocked UI or waiting state */
+.blocking-ui {
+    cursor: url('/cursor-pngs/cursor-wait.png'), wait;
+}
+
+/* Help icons or tooltips (if implemented) */
+.help-icon {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="%231c2526" stroke="%23 brushing a0a0a0" stroke-width="2"/><text x="16" y="20" font-family="Montserrat, sans-serif" font-size="14" fill="%23a0a0a0" text-anchor="middle">?</text><circle cx="16" cy="16" r="12" fill="none" stroke="%23bcbcbc" stroke-width="2" filter="url(%23glow)"/><defs><filter id="glow"><feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="%23bcbcbc"/></filter></defs></svg>'), help;
+}
+
+/* Crosshair for precise selection (e.g., image editors) */
+.crosshair {
+    cursor: url('/cursor-pngs/cursor-resize-diagonal.png'), crosshair;
+}
+
+/* Move cursor for movable elements (if implemented) */
+.moveable {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M16 8 L16 24 M8 16 L24 16" stroke="%23a0a0a0" stroke-width="3" fill="%231c2526"/><path d="M16 8 L16 24 M8 16 L24 16" stroke="%23bcbcbc" stroke-width="3" filter="url(%23glow)"/><defs><filter id="glow"><feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="%23bcbcbc"/></filter></defs></svg>'), move;
+}
+
+/* Disable custom cursors on touch devices */
+@media (pointer: coarse) {
+    body,
+    a:hover,
+    a:active,
+    button:hover,
+    button:active,
+    .segment-button:hover,
+    .segment-button:active,
+    input[type="submit"]:hover,
+    input[type="submit"]:active,
+    input[type="button"]:hover,
+    input[type="button"]:active,
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    textarea,
+    button:disabled,
+    .segment-button:disabled,
+    input[type="submit"]:disabled,
+    input[type="button"]:disabled,
+    .grab-zone,
+    .grab-zone:active,
+    .zoomable-img,
+    .loading-area,
+    .blocking-ui,
+    .help-icon,
+    .crosshair,
+    .moveable,
+    .organizer-logo:hover {
+        cursor: auto;
+    }
+}
