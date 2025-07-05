@@ -67,7 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // CA reference check for relevant segments
       const caRef = data['CA Reference'] || 'n/a';
-      if (caRef !== 'n/a') {
+      const invalidCaRefs = ['n/a', 'N/A', 'no', 'none', 'No', 'None', 'NO', 'NONE'];
+      if (!invalidCaRefs.includes(caRef)) {
         const { data: caCodes, error: caError } = await supabase
           .from('ca_reference_codes')
           .select('code')
