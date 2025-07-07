@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (href.startsWith('http')) {
         window.location.href = href;
       } else {
-        window.location.href = 'https://frameofrevolution.netlify.app' + href;
+        window.location.href = 'https://frbd.netlify.app' + href;
       }
     });
   });
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // CA reference check for relevant segments
       const caRef = data['CA Reference'] || 'n/a';
-      const invalidCaRefs = ['n/a', 'N/A', 'no', 'none', 'No', 'None', 'NO', 'NONE'];
+      const invalidCaRefs = ['hogamara'];
       if (!invalidCaRefs.includes(caRef)) {
         const { data: caCodes, error: caError } = await supabase
           .from('ca_reference_codes')
