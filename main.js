@@ -65,18 +65,42 @@ document.addEventListener('DOMContentLoaded', () => {
         imageUrls.push(data['Link']);
       }
 
-      // CA reference check for relevant segments
+      // Validate CA reference and club reference
       const caRef = data['CA Reference'] || 'n/a';
-      const invalidCaRefs = ['hogamara'];
-      if (!invalidCaRefs.includes(caRef)) {
+      const clubRef = data['Club Reference'] || 'n/a';
+
+      // Check CA reference against ca_reference_codes table
+      let isCaValid = caRef === 'n/a'; // Allow 'n/a' as valid
+      if (caRef !== 'n/a') {
         const { data: caCodes, error: caError } = await supabase
           .from('ca_reference_codes')
           .select('code')
           .eq('code', caRef);
         if (caError || caCodes.length === 0) {
-          alert('Invalid CA Reference. Submission failed.');
-          return;
+          isCaValid = false;
+        } else {
+          isCaValid = true;
         }
+      }
+
+      // Check club reference against club_reference_codes table
+      let isClubValid = clubRef === 'n/a'; // Allow 'n/a' as valid
+      if (clubRef !== 'n/a') {
+        const { data: clubCodes, error: clubError } = await supabase
+          .from('club_reference_codes')
+          .select('code')
+          .eq('code', clubRef);
+        if (clubError || clubCodes.length === 0) {
+          isClubValid = false;
+        } else {
+          isClubValid = true;
+        }
+      }
+
+      // If either CA or club reference is invalid, show error and stop submission
+      if (!isCaValid || !isClubValid) {
+        alert('Invalid CA Reference or Club Reference. Please check and try again.');
+        return;
       }
 
       // Determine table and insert data based on formId
@@ -92,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mail_address: data['Mail Address'],
             photo_title: data['Photo Title'],
             ca_reference: caRef,
-            club_reference: data['Club Reference'],
+            club_reference: clubRef,
             volunteer_ref: data['Volunteer Reference'],
             image_urls: imageUrls,
           };
@@ -108,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mail_address: data['Mail Address'],
             photo_title: data['Photo Title'],
             ca_reference: caRef,
-            club_reference: data['Club Reference'],
+            club_reference: clubRef,
             volunteer_ref: data['Volunteer Reference'],
             image_urls: imageUrls,
           };
@@ -123,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             social_link: data['Facebook or Insta Link'],
             mail_address: data['Mail Address'],
             ca_reference: caRef,
-            club_reference: data['Club Reference'],
+            club_reference: clubRef,
             volunteer_ref: data['Volunteer Reference'],
             image_urls: imageUrls.length > 0 ? imageUrls : null,
           };
@@ -146,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mail_address: data['Mail Address'],
             google_drive_link: data['Google Drive Link'],
             ca_reference: caRef,
-            club_reference: data['Club Reference'],
+            club_reference: clubRef,
             volunteer_ref: data['Volunteer Reference'],
           };
           tableName = 'video_content';
@@ -161,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mail_address: data['Mail Address'],
             photo_title: data['Photo Title'],
             ca_reference: caRef,
-            club_reference: data['Club Reference'],
+            club_reference: clubRef,
             volunteer_ref: data['Volunteer Reference'],
             image_urls: imageUrls,
           };
@@ -192,6 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
             club_email: data['Club Email'],
             current_post: data['Current Post'],
             ca_reference: caRef,
+            club_reference: clubRef,
             volunteer_ref: data['Volunteer Reference'],
             director_ref: data['Director Reference'],
             logo_urls: imageUrls.length > 0 ? imageUrls : null,
