@@ -216,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
             club_email: data['Club Email'],
             current_post: data['Current Post'],
             ca_reference: caRef,
-            club_reference: clubRef,
             volunteer_ref: data['Volunteer Reference'],
             director_ref: data['Director Reference'],
             logo_urls: imageUrls.length > 0 ? imageUrls : null,
