@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-46ZR0XEZ29"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -13,10 +12,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frame of Revolution: Bangladesh 2.0 - CA Registration</title>
+    
     <link rel="stylesheet" href="registration.css">
     <link rel="stylesheet" href="custom-cursor.css">
     <link rel="icon" type="image/jpeg" href="frame_of_revolution_white_logo.jpeg">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/folks" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <header class="sticky-nav">
@@ -28,21 +30,38 @@
     </header>
     <main>
         <section class="hero">
-            <img src="frame_of_revolution_bg.jpeg" alt="Event Background" class="background-img">
+            <div class="background-img"></div>
             <div class="content">
                 <h1>Campus Ambassador Application</h1>
-                <form id="ca-registration">
-                    <input type="text" name="Name" placeholder="Name" required>
-                    <input type="text" name="Institute" placeholder="Institute" required>
-                    <input type="text" name="Current Class/Semester" placeholder="Current Class/Semester" required>
-                    <input type="tel" name="Contact Number (WhatsApp)" placeholder="Contact Number (WhatsApp)" required>
-                    <input type="url" name="Facebook or Insta Link" placeholder="Facebook or Insta account link" required>
-                    <input type="email" name="Mail Address" placeholder="Mail Address" required>
+                <p>Join our team to represent "Frame of Revolution: Bangladesh 2.0" at your institution. Lead, inspire, and help us make this event a major success.</p>
+                <form id="ca-registration" novalidate>
+                    <input type="text" name="Name" placeholder="Full Name" required>
+                    <input type="text" name="Institute" placeholder="Institution Name" required>
+                    <input type="text" name="Current Class/Semester" placeholder="Current Class or Semester" list="class-suggestions" required>
+                    <datalist id="class-suggestions">
+                        <option value="Five"></option>
+                        <option value="Six"></option>
+                        <option value="Seven"></option>
+                        <option value="Eight"></option>
+                        <option value="Nine"></option>
+                        <option value="Ten"></option>
+                        <option value="Intermediate 1st Year"></option>
+                        <option value="Intermediate 2nd Year"></option>
+                        <option value="HSC 24"></option>
+                        <option value="HSC 25"></option>
+                        <option value="Honours 1st Year"></option>
+                        <option value="Honours 2nd Year"></option>
+                        <option value="Honours 3rd Year"></option>
+                        <option value="Honours 4th Year"></option>
+                    </datalist>
+                    <input type="tel" name="Contact Number (WhatsApp)" placeholder="WhatsApp Number (e.g., 01xxxxxxxxx)" required>
+                    <input type="url" name="Facebook or Insta Link" placeholder="Facebook or Instagram Profile Link" required>
+                    <input type="email" name="Mail Address" placeholder="Email Address" required>
                     <input type="text" name="Past CA Experience" placeholder="Past CA Experience (Yes/No)" required>
-                    <textarea name="Elaborate Experience" placeholder="Elaborate on your experience (if applicable)" rows="4"></textarea>
-                    <input type="text" name="Volunteer Reference" placeholder="Volunteer Reference (n/a if none)" required>
-                    <input type="text" name="Director Reference" placeholder="Director Reference (n/a if none)" required>
-                    <input type="url" name="Link" placeholder="Upload your own photo to your Google Drive, make sure the folder is set to public, and then share the Drive link here." required>
+                    <textarea name="Elaborate Experience" placeholder="Elaborate on your experience (if any)" rows="4"></textarea>
+                    <input type="url" name="Link" placeholder="Public Google Drive Link to Your Photo" required>
+                    <input type="text" name="Volunteer Reference" placeholder="Volunteer Reference (or n/a)" required>
+                    <input type="text" name="Director Reference" placeholder="Director Reference (or n/a)" required>
                     <button type="submit">Submit Application</button>
                 </form>
             </div>

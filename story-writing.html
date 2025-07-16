@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-46ZR0XEZ29"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -13,10 +12,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frame of Revolution: Bangladesh 2.0 - Story Writing</title>
+    
     <link rel="stylesheet" href="registration.css">
     <link rel="stylesheet" href="custom-cursor.css">
     <link rel="icon" type="image/jpeg" href="frame_of_revolution_white_logo.jpeg">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/folks" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <header class="sticky-nav">
@@ -28,14 +30,14 @@
     </header>
     <main>
         <section class="hero">
-            <img src="frame_of_revolution_bg.jpeg" alt="Event Background" class="background-img">
+            <div class="background-img"></div>
             <div class="content">
                 <h1>Story Writing Submission</h1>
-                <p>Theme: Protest graffiti is more than paint on walls—it’s the unheard scream of a movement. Write a micro-story (under 300 words) imagining the untold tale behind real graffiti from the July 2024 protests. Who left this mark? What were they fighting for? What happens when the walls talk back? No experience needed—just rage, hope, and a pen. The best stories will be posted on our official Facebook page, and the top three winners will be awarded on 36 July 2025.</p>
-                <form id="story-writing">
-                    <input type="text" name="Name" placeholder="Name" required>
-                    <input type="text" name="Institute" placeholder="Institute" required>
-                    <input type="text" name="Current Class/Semester" placeholder="Current Class/Semester" list="class-suggestions" required>
+                <p>Theme: Write a micro-story (under 300 words) imagining the untold tale behind real graffiti from the July 2024 protests. After registering, you will be redirected to a WhatsApp group to submit your story.</p>
+                <form id="story-writing" novalidate>
+                    <input type="text" name="Name" placeholder="Full Name" required>
+                    <input type="text" name="Institute" placeholder="Institution Name" required>
+                    <input type="text" name="Current Class/Semester" placeholder="Current Class or Semester" list="class-suggestions" required>
                     <datalist id="class-suggestions">
                         <option value="Five"></option>
                         <option value="Six"></option>
@@ -52,13 +54,13 @@
                         <option value="Honours 3rd Year"></option>
                         <option value="Honours 4th Year"></option>
                     </datalist>
-                    <input type="tel" name="Contact Number (WhatsApp)" placeholder="Contact Number (WhatsApp)" required>
-                    <input type="url" name="Facebook or Insta Link" placeholder="Facebook or Insta account link" required>
-                    <input type="email" name="Mail Address" placeholder="Mail Address" required>
-                    <input type="text" name="CA Reference" placeholder="CA Reference (n/a if none)" required>
-                    <input type="text" name="Club Reference" placeholder="Club Reference (n/a if none)" required>
-                    <input type="text" name="Volunteer Reference" placeholder="Volunteer Reference (n/a if none)" required>
-                    <button type="submit">Register</button>
+                    <input type="tel" name="Contact Number (WhatsApp)" placeholder="WhatsApp Number (e.g., 01xxxxxxxxx)" required>
+                    <input type="url" name="Facebook or Insta Link" placeholder="Facebook or Instagram Profile Link" required>
+                    <input type="email" name="Mail Address" placeholder="Email Address" required>
+                    <input type="text" name="CA Reference" placeholder="CA Reference Code (or n/a)" required>
+                    <input type="text" name="Club Reference" placeholder="Club Reference Code (or n/a)" required>
+                    <input type="text" name="Volunteer Reference" placeholder="Volunteer Reference (or n/a)" required>
+                    <button type="submit">Register to Submit Story</button>
                 </form>
             </div>
         </section>

@@ -1,96 +1,288 @@
-/* Default cursor */
+/* === :ROOT VARIABLES === */
+:root {
+    --bg-color: #1C2526;
+    --text-color: #E0E0E0;
+    --primary-accent: #A0A0A0;
+    --highlight-color: #FFFFFF;
+    --overlay-color: rgba(28, 37, 38, 0.85);
+    --card-bg: rgba(0, 0, 0, 0.5);
+    --success-color: #28a745;
+    --error-color: #dc3545;
+    --font-heading: 'Crimson Pro', serif;
+    --font-body: 'Folks-Light', sans-serif;
+}
+
+/* === BASE & BODY === */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    cursor: url('/cursor-pngs/cursor-default.png') 16 16, auto;
+    margin: 0;
+    font-family: var(--font-body);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden;
 }
 
-/* Hover cursor for interactive elements */
-a:hover,
-button:hover,
-.segment-button:hover,
-input[type="submit"]:hover,
-input[type="button"]:hover,
-.organizer-logo:hover {
-    cursor: url('/cursor-pngs/cursor-hover.png') 16 16, pointer;
+/* === NAVBAR (Consistent with main site) === */
+.sticky-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: var(--overlay-color);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--primary-accent);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-/* Text input cursor */
+.logo {
+    height: 2.5rem;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.1);
+}
+
+.sticky-nav nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-left: 2rem;
+    padding-bottom: 5px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.sticky-nav nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--highlight-color);
+    transition: width 0.4s ease;
+}
+
+.sticky-nav nav a:hover {
+    color: var(--highlight-color);
+}
+
+.sticky-nav nav a:hover::after {
+    width: 100%;
+}
+
+/* === HERO & CONTENT WRAPPER === */
+.hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 4rem 1rem;
+    text-align: center;
+}
+
+.background-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('frame_of_revolution_bg.jpeg') no-repeat center center/cover;
+    background-attachment: fixed;
+    filter: grayscale(1) brightness(0.4);
+    z-index: -1;
+}
+
+.content {
+    background: var(--overlay-color);
+    padding: 2.5rem;
+    border-radius: 15px;
+    border: 1px solid var(--primary-accent);
+    max-width: 800px;
+    width: 100%;
+    box-sizing: border-box;
+    animation: fadeIn 1.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === TYPOGRAPHY === */
+h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: var(--highlight-color);
+    margin: 0 0 1rem 0;
+}
+
+p {
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    line-height: 1.7;
+    max-width: 700px;
+    margin: 0 auto 2.5rem auto;
+    color: var(--text-color);
+}
+
+/* === FORM STYLES === */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem; /* Increased gap to prevent datalist overlap */
+}
+
 input[type="text"],
 input[type="email"],
 input[type="tel"],
 input[type="url"],
 textarea {
-    cursor: url('/cursor-pngs/cursor-textinput.png') 16 16, text;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--text-color);
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--primary-accent);
+    border-radius: 8px;
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Disabled cursor */
-button:disabled,
-.segment-button:disabled,
-input[type="submit"]:disabled,
-input[type="button"]:disabled {
-    cursor: url('/cursor-pngs/cursor-unavailable.png') 16 16, not-allowed;
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="url"]::placeholder,
+textarea::placeholder {
+    color: var(--primary-accent);
+    opacity: 1;
 }
 
-/* Resize cursors for draggable elements (if applicable) */
-.grab-zone {
-    cursor: url('/cursor-pngs/cursor-nwresize.png') 16 16, nw-resize;
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--highlight-color);
+    box-shadow: 0 0 10px rgba(160, 160, 160, 0.3);
 }
 
-.grab-zone:active {
-    cursor: url('/cursor-pngs/cursor-neresize.png') 16 16, ne-resize;
+textarea {
+    resize: vertical;
+    min-height: 80px;
 }
 
-/* Zoom cursor (if applicable, e.g., gallery previews) */
-.zoomable-img {
-    cursor: url('/cursor-pngs/cursor-hover.png') 16 16, zoom-in;
+/* === SUBMIT BUTTON === */
+button[type="submit"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 2rem;
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--bg-color);
+    background-color: var(--primary-accent);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 1rem;
 }
 
-/* Loading or waiting cursor (if applicable, e.g., form submission) */
-.loading-area,
-.blocking-ui {
-    cursor: url('/cursor-pngs/cursor-unavailable.png') 16 16, wait;
+button[type="submit"]:hover:not(:disabled) {
+    background-color: var(--highlight-color);
+    transform: translateY(-3px);
 }
 
-/* Help cursor (if applicable, e.g., tooltips) */
-.help-icon {
-    cursor: url('/cursor-pngs/cursor-hover.png') 16 16, help;
+button[type="submit"]:disabled {
+    background-color: #555;
+    cursor: wait;
 }
 
-/* Crosshair cursor (if applicable, e.g., image editors) */
-.crosshair {
-    cursor: url('/cursor-pngs/cursor-swresize.png') 16 16, crosshair;
+/* Loading Spinner */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--highlight-color);
+    animation: spin 1s ease-in-out infinite;
 }
 
-/* Move cursor (if applicable, e.g., movable elements) */
-.moveable {
-    cursor: url('/cursor-pngs/cursor-seresize.png') 16 16, move;
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
-/* Disable custom cursors on touch devices */
-@media (pointer: coarse) {
-    body,
-    a:hover,
-    button:hover,
-    .segment-button:hover,
-    input[type="submit"]:hover,
-    input[type="button"]:hover,
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    input[type="url"],
-    textarea,
-    button:disabled,
-    .segment-button:disabled,
-    input[type="submit"]:disabled,
-    input[type="button"]:disabled,
-    .grab-zone,
-    .grab-zone:active,
-    .zoomable-img,
-    .loading-area,
-    .blocking-ui,
-    .help-icon,
-    .crosshair,
-    .moveable,
-    .organizer-logo:hover {
-        cursor: auto;
+/* Form Message Box */
+.form-message {
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    display: none; /* Hidden by default */
+    text-align: center;
+}
+
+.form-message.success {
+    background-color: var(--success-color);
+    color: var(--highlight-color);
+    display: block;
+}
+
+.form-message.error {
+    background-color: var(--error-color);
+    color: var(--highlight-color);
+    display: block;
+}
+
+/* === FOOTER === */
+.footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: #111819;
+    border-top: 1px solid var(--primary-accent);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.footer a {
+    color: var(--primary-accent);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: var(--highlight-color);
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+    .sticky-nav {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    .sticky-nav nav {
+        margin-top: 1rem;
+    }
+    .sticky-nav nav a {
+        margin: 0 0.75rem;
+    }
+    .content {
+        padding: 1.5rem;
+        margin: 2rem 0;
     }
 }
