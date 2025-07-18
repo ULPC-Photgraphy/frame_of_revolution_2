@@ -6,18 +6,205 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-46ZR0XEZ29');
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Story Writing Graffity - Frame of Revolution: Bangladesh 2.0</title>
     <link rel="icon" type="image/jpeg" href="frame_of_revolution_white_logo.jpeg">
-    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.cdnfonts.com/css/folks" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        :root {
+            --bg-color: #1C2526;
+            --text-color: #E0E0E0;
+            --primary-accent: #A0A0A0;
+            --highlight-color: #FFFFFF;
+            --overlay-color: rgba(28, 37, 38, 0.85);
+            --card-bg: rgba(0, 0, 0, 0.5);
+            --font-heading: 'Crimson Pro', serif;
+            --font-body: 'Folks-Light', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: var(--overlay-color);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--primary-accent);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: padding 0.3s ease;
+        }
+
+        .logo {
+            height: 2.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+
+        .navbar nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-left: 2rem;
+            padding-bottom: 5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .navbar nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--highlight-color);
+            transition: width 0.4s ease;
+        }
+
+        .navbar nav a:hover {
+            color: var(--highlight-color);
+        }
+
+        .navbar nav a:hover::after {
+            width: 100%;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 4rem 1rem;
+            text-align: center;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('frame_of_revolution_bg.jpeg') no-repeat center center/cover;
+            background-attachment: fixed;
+            filter: grayscale(1) brightness(0.4);
+            z-index: -1;
+        }
+
+        .hero-content {
+            background: var(--overlay-color);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--primary-accent);
+            max-width: 1200px;
+            width: 100%;
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Image Gallery --- */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+
+        .image-gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--primary-accent);
+        }
+
+        .image-gallery img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- Footer --- */
+        .footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: #111819;
+            border-top: 1px solid var(--primary-accent);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .footer a {
+            color: var(--primary-accent);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--highlight-color);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .navbar nav {
+                margin-top: 1rem;
+            }
+
+            .navbar nav a {
+                margin: 0 0.75rem;
+                font-size: 1.1rem;
+            }
+
+            .hero-content {
+                padding: 1.5rem;
+            }
+
+            .image-gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .image-gallery img {
+                height: 150px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header class="navbar">
@@ -31,9 +218,11 @@
         <section class="hero">
             <div class="hero-background"></div>
             <div class="hero-content">
-                <img src="GRAFITTY.png">
-                <img src="GRAFITTY(1).png">
-                <img src="GRAFITTY(2).png">
+                <div class="image-gallery">
+                    <img src="GRAFITTY.png" alt="Graffity Image 1">
+                    <img src="GRAFITTY(1).png" alt="Graffity Image 2">
+                    <img src="GRAFITTY(2).png" alt="Graffity Image 3">
+                </div>
             </div>
         </section>
     </main>
